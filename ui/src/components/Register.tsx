@@ -15,6 +15,9 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core';
 import { Form, Field } from 'react-final-form';
 import { TextField } from 'final-form-material-ui';
 import { toast } from 'react-toastify';
+import { auth } from '../firebase';
+import { useHistory } from 'react-router-dom';
+import routes from '../constants/routes';
 
 interface Values {
   email: string;
@@ -32,9 +35,16 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     loginButton: {
       marginTop: theme.spacing(2),
+      width: 300,
+      margin: 'auto',
+    },
+    registerButton: {
+      marginTop: theme.spacing(2),
       width: 250,
       margin: 'auto',
       marginBottom: 20,
+      marginLeft: 75,
+      backgroundColor: '#6573c3',
     },
     header: {
       textAlign: 'center',
@@ -55,6 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Register() {
   const classes = useStyles();
   const [gender, setGender] = React.useState('male');
+  const history = useHistory();
 
   const renderTextfield = (
     name: 'name' | 'email' | 'birthday',
@@ -89,6 +100,9 @@ export default function Register() {
       />
     );
   };
+  const logInClick = () => {
+    history.push(routes.completeRegister);
+  };
 
   const onSubmit = async (value: Values) => {
     const { email } = value;
@@ -98,7 +112,7 @@ export default function Register() {
         url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
         handleCodeInApp: true,
       };
-      //const result = await auth.sendSignInLinkToEmail(email, config as any);
+      const result = await auth.sendSignInLinkToEmail(email, config as any);
       toast.success(
         `Email is send to ${email}. Please verify your email to complete registration.`
       );
@@ -145,7 +159,6 @@ export default function Register() {
                 <CardActions>
                   <Button
                     variant="contained"
-                    size="large"
                     color="primary"
                     className={classes.loginButton}
                     type="submit"
@@ -156,6 +169,14 @@ export default function Register() {
               </form>
             )}
           />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={logInClick}
+            className={classes.registerButton}
+          >
+            Login
+          </Button>
         </Card>
       </div>
     </div>

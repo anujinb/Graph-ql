@@ -40,10 +40,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     registerButton: {
       marginTop: theme.spacing(2),
-      width: 250,
+      width: 300,
       margin: 'auto',
       marginBottom: 20,
-      marginLeft: 75,
+      marginLeft: 50,
       backgroundColor: '#6573c3',
     },
     header: {
